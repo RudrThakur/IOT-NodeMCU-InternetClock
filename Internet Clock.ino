@@ -4,8 +4,8 @@
 
 #include "LedControl.h"
 
-const char *ssid     = "RUDRAKSHA";
-const char *password = "9043309074";
+const char *ssid     = "SSID";
+const char *password = "PASSWORD";
 
 const long utcOffsetInSeconds = 3600;
 
