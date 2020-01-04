@@ -7,7 +7,7 @@
 const char *ssid     = "SSID";
 const char *password = "PASSWORD";
 
-const long utcOffsetInSeconds = 3600;
+//const long utcOffsetInSeconds = 3600;
 
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -16,7 +16,7 @@ LedControl lc= LedControl(D7,D4,D5,1);
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+NTPClient timeClient(ntpUDP, "0.in.pool.ntp.org", 19800,60000);
 
 void setup(){
   Serial.begin(115200);
@@ -58,32 +58,17 @@ void loop() {
   //Serial.println(timeClient.getFormattedTime());
 
 //  Write Hours to 7-Segment
-  if((timeClient.getHours() + 4) <= 24){
-      lc.setDigit(0,6,(timeClient.getHours() + 4)%10,false);
-      lc.setDigit(0,7,((timeClient.getHours() + 4)/10)%10,false);
-  }
 
-  else{
-    lc.setDigit(0,6,(29 - timeClient.getHours())%10,false);
-     lc.setDigit(0,7,((29 - timeClient.getHours())/10)%10,false);
-  }
-
+      lc.setDigit(0,6,timeClient.getHours()%10,false);
+      lc.setDigit(0,7,(timeClient.getHours()/10)%10,false);
 
 //  Write Minutes to 7-Segment
 
-  if((timeClient.getMinutes()+ 30) <= 60){
-      lc.setDigit(0,4,(timeClient.getMinutes()+ 30)%10,false);
-      lc.setDigit(0,5,((timeClient.getMinutes() + 30)/10)%10,false);
-  }
-
-  else{
-    lc.setDigit(0,4,(90 - timeClient.getMinutes())%10,false);
-    lc.setDigit(0,5,((90 - timeClient.getMinutes())/10)%10,false);
-  }
-
+      lc.setDigit(0,4,timeClient.getMinutes()%10,false);
+      lc.setDigit(0,5,(timeClient.getMinutes()/10)%10,false);
 
 //  Write Minutes to 7-Segment
-  lc.setDigit(0,2,(timeClient.getSeconds())%10,false);
+  lc.setDigit(0,2,timeClient.getSeconds()%10,false);
   lc.setDigit(0,3,(timeClient.getSeconds()/10)%10,false);
 
   delay(1000);
